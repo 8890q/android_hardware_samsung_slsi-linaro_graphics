@@ -17,7 +17,6 @@
 #ifndef ANDROID_EXYNOS_HWC_MODULE_H_
 #define ANDROID_EXYNOS_HWC_MODULE_H_
 #include <hardware/hwcomposer.h>
-#include <decon-fb.h>
 
 #define HWC_VERSION     HWC_DEVICE_API_VERSION_1_5
 #define IDMA_SECURE     IDMA_G2
@@ -40,9 +39,6 @@
 #define HDMI_RESERVE_MEM_DEV_NAME "/sys/class/ion_cma/ion_video_ext/isolated"
 #define SMEM_PATH "/dev/s5p-smem"
 #define SECMEM_IOC_SET_VIDEO_EXT_PROC   _IOWR('S', 13, int)
-
-/* Max number windows available in Exynos7420 is 7. */
-#define NUM_AVAILABLE_HW_WINDOWS	7
 
 const size_t GSC_DST_CROP_W_ALIGNMENT_RGB888 = 1;
 const size_t GSC_W_ALIGNMENT = 16;
@@ -67,16 +63,9 @@ struct exynos_mpp_t {
     unsigned int index;
 };
 
+/* VPP_G0 is secure dma, It is managed as IDMA_SECURE separately*/
 const exynos_mpp_t AVAILABLE_INTERNAL_MPP_UNITS[] = {{MPP_VG, 0}, {MPP_VG, 1}, {MPP_VPP_G, 0}, {MPP_VPP_G, 1}, {MPP_VGR, 0}, {MPP_VGR, 1}};
-
-// removes support for blending from VG-channels
-#define MPP_VG_IS_BLEND_INCAPABLE
-
 const exynos_mpp_t AVAILABLE_EXTERNAL_MPP_UNITS[] = {{MPP_MSC, 0}, {MPP_MSC, 0}, {MPP_MSC, 0}, {MPP_MSC, 0}, {MPP_MSC, 0}};
-
-// Overriden to work around VG-channels (See AVAILABLE_INTERNAL_MPP_UNITS)
-const uint32_t VPP_ASSIGN_ORDER[] = {MPP_VG, MPP_VPP_G, MPP_VGR};
-#define VPP_ASSIGN_ORDER_DEFINED
 
 #define DEFAULT_MPP_DST_FORMAT HAL_PIXEL_FORMAT_RGBX_8888
 
