@@ -27,10 +27,10 @@ ExynosMPPModule::ExynosMPPModule(ExynosDisplay *display, unsigned int mppType, u
 
 int ExynosMPPModule::getBufferUsage(private_handle_t *srcHandle)
 {
-    int usage = GRALLOC_USAGE_SW_READ_NEVER |
-            GRALLOC_USAGE_SW_WRITE_NEVER |
-            GRALLOC_USAGE_NOZEROED |
-            GRALLOC_USAGE_HW_COMPOSER;
+    unsigned long long usage = GRALLOC_USAGE_SW_READ_NEVER |
+                          GRALLOC_USAGE_SW_WRITE_NEVER |
+                          GRALLOC_USAGE_NOZEROED |
+                          GRALLOC_USAGE_HW_COMPOSER;
 
     if (getDrmMode(srcHandle->flags) == SECURE_DRM)
         usage |= GRALLOC_USAGE_PROTECTED;
@@ -57,8 +57,8 @@ bool ExynosMPPModule::checkRotationCase(hwc_layer_1_t &layer, uint8_t rotType)
         else
             return false;
     case eMPPRot2:
-        if ((layer.transform == HAL_TRANSFORM_ROT_90) || (layer.transform == HAL_TRANSFORM_ROT_90 | HAL_TRANSFORM_FLIP_H) ||
-            (layer.transform == HAL_TRANSFORM_ROT_90 | HAL_TRANSFORM_FLIP_V) || (layer.transform == HAL_TRANSFORM_ROT_270))
+        if ((layer.transform == HAL_TRANSFORM_ROT_90) || (layer.transform == (HAL_TRANSFORM_ROT_90 | HAL_TRANSFORM_FLIP_H)) ||
+            (layer.transform == (HAL_TRANSFORM_ROT_90 | HAL_TRANSFORM_FLIP_V)) || (layer.transform == HAL_TRANSFORM_ROT_270))
             return true;
         else
             return false;
@@ -86,10 +86,8 @@ int ExynosMPPModule::getMaxWidth(hwc_layer_1_t __unused &layer)
 {
     private_handle_t *handle = private_handle_t::dynamicCast(layer.handle);
     switch (mType) {
-#ifdef MPP_VPP_G
     case MPP_VPP_G:
         return 65535;
-#endif
     case MPP_VG:
     case MPP_VGR:
         if (isFormatRgb(handle->format))
@@ -106,10 +104,8 @@ int ExynosMPPModule::getMaxHeight(hwc_layer_1_t &layer)
 {
     private_handle_t *handle = private_handle_t::dynamicCast(layer.handle);
     switch (mType) {
-#ifdef MPP_VPP_G
     case MPP_VPP_G:
         return 8191;
-#endif
     case MPP_VG:
     case MPP_VGR:
         if (isFormatRgb(handle->format))
@@ -128,10 +124,8 @@ int ExynosMPPModule::getMinWidth(hwc_layer_1_t &layer)
 {
     private_handle_t *handle = private_handle_t::dynamicCast(layer.handle);
     switch (mType) {
-#ifdef MPP_VPP_G
     case MPP_VPP_G:
         return 16;
-#endif
     case MPP_VG:
         if (isFormatRgb(handle->format))
             return 16;
@@ -166,10 +160,8 @@ int ExynosMPPModule::getMinHeight(hwc_layer_1_t &layer)
 {
     private_handle_t *handle = private_handle_t::dynamicCast(layer.handle);
     switch (mType) {
-#ifdef MPP_VPP_G
     case MPP_VPP_G:
         return 8;
-#endif
     case MPP_VG:
         if (isFormatRgb(handle->format))
             return 8;
@@ -204,10 +196,8 @@ int ExynosMPPModule::getSrcWidthAlign(hwc_layer_1_t &layer)
 {
     private_handle_t *handle = private_handle_t::dynamicCast(layer.handle);
     switch (mType) {
-#ifdef MPP_VPP_G
     case MPP_VPP_G:
         return 1;
-#endif
     case MPP_VG:
     case MPP_VGR:
         if (isFormatRgb(handle->format))
@@ -230,10 +220,8 @@ int ExynosMPPModule::getSrcHeightAlign(hwc_layer_1_t &layer)
 {
     private_handle_t *handle = private_handle_t::dynamicCast(layer.handle);
     switch (mType) {
-#ifdef MPP_VPP_G
     case MPP_VPP_G:
         return 1;
-#endif
     case MPP_VG:
     case MPP_VGR:
         if (isFormatRgb(handle->format))
@@ -259,9 +247,7 @@ int ExynosMPPModule::getMaxCropWidth(hwc_layer_1_t &layer)
             return 4064;
     }
     switch (mType) {
-#ifdef MPP_VPP_G
     case MPP_VPP_G:
-#endif
     case MPP_VG:
         return 4096;
     case MPP_VGR:
@@ -285,9 +271,7 @@ int ExynosMPPModule::getMaxCropWidth(hwc_layer_1_t &layer)
 int ExynosMPPModule::getMaxCropHeight(hwc_layer_1_t &layer)
 {
     switch (mType) {
-#ifdef MPP_VPP_G
     case MPP_VPP_G:
-#endif
     case MPP_VG:
         return 4096;
     case MPP_VGR:
@@ -308,10 +292,8 @@ int ExynosMPPModule::getMinCropWidth(hwc_layer_1_t &layer)
 {
     private_handle_t *handle = private_handle_t::dynamicCast(layer.handle);
     switch (mType) {
-#ifdef MPP_VPP_G
     case MPP_VPP_G:
         return 16;
-#endif
     case MPP_VG:
         if (isFormatRgb(handle->format))
             return 16;
@@ -345,10 +327,8 @@ int ExynosMPPModule::getMinCropHeight(hwc_layer_1_t &layer)
 {
     private_handle_t *handle = private_handle_t::dynamicCast(layer.handle);
     switch (mType) {
-#ifdef MPP_VPP_G
     case MPP_VPP_G:
         return 8;
-#endif
     case MPP_VG:
         if (isFormatRgb(handle->format))
             return 8;
@@ -387,10 +367,8 @@ int ExynosMPPModule::getCropWidthAlign(hwc_layer_1_t &layer)
             return 2;
     }
     switch (mType) {
-#ifdef MPP_VPP_G
     case MPP_VPP_G:
         return 1;
-#endif
     case MPP_VG:
     case MPP_VGR:
         if (isFormatRgb(handle->format))
@@ -415,10 +393,8 @@ int ExynosMPPModule::getCropHeightAlign(hwc_layer_1_t &layer)
 {
     private_handle_t *handle = private_handle_t::dynamicCast(layer.handle);
     switch (mType) {
-#ifdef MPP_VPP_G
     case MPP_VPP_G:
         return 1;
-#endif
     case MPP_VG:
     case MPP_VGR:
     case MPP_MSC:
@@ -437,10 +413,8 @@ int ExynosMPPModule::getSrcXOffsetAlign(hwc_layer_1_t &layer)
 {
     private_handle_t *handle = private_handle_t::dynamicCast(layer.handle);
     switch (mType) {
-#ifdef MPP_VPP_G
     case MPP_VPP_G:
         return 1;
-#endif
     case MPP_VG:
     case MPP_VGR:
         if (isFormatRgb(handle->format))
@@ -465,10 +439,8 @@ int ExynosMPPModule::getSrcYOffsetAlign(hwc_layer_1_t &layer)
 {
     private_handle_t *handle = private_handle_t::dynamicCast(layer.handle);
     switch (mType) {
-#ifdef MPP_VPP_G
     case MPP_VPP_G:
         return 1;
-#endif
     case MPP_VG:
     case MPP_VGR:
         if (isFormatRgb(handle->format))
@@ -492,9 +464,7 @@ int ExynosMPPModule::getSrcYOffsetAlign(hwc_layer_1_t &layer)
 int ExynosMPPModule::getMaxDstWidth(int __unused format)
 {
     switch (mType) {
-#ifdef MPP_VPP_G
     case MPP_VPP_G:
-#endif
     case MPP_VG:
     case MPP_VGR:
         return 4096;
@@ -508,9 +478,7 @@ int ExynosMPPModule::getMaxDstWidth(int __unused format)
 int ExynosMPPModule::getMaxDstHeight(int __unused format)
 {
     switch (mType) {
-#ifdef MPP_VPP_G
     case MPP_VPP_G:
-#endif
     case MPP_VG:
     case MPP_VGR:
         return 4096;
@@ -524,10 +492,8 @@ int ExynosMPPModule::getMaxDstHeight(int __unused format)
 int ExynosMPPModule::getMinDstWidth(int format)
 {
     switch (mType) {
-#ifdef MPP_VPP_G
     case MPP_VPP_G:
         return 16;
-#endif
     case MPP_VG:
         if (isFormatRgb(format))
             return 16;
@@ -546,10 +512,8 @@ int ExynosMPPModule::getMinDstWidth(int format)
 int ExynosMPPModule::getMinDstHeight(int format)
 {
     switch (mType) {
-#ifdef MPP_VPP_G
     case MPP_VPP_G:
         return 8;
-#endif
     case MPP_VG:
         if (isFormatRgb(format))
             return 8;
@@ -569,10 +533,8 @@ int ExynosMPPModule::getMinDstHeight(int format)
 int ExynosMPPModule::getDstWidthAlign(int format)
 {
     switch (mType) {
-#ifdef MPP_VPP_G
     case MPP_VPP_G:
         return 1;
-#endif
     case MPP_VG:
     case MPP_VGR:
     case MPP_MSC:
@@ -590,10 +552,8 @@ int ExynosMPPModule::getDstWidthAlign(int format)
 int ExynosMPPModule::getDstHeightAlign(int format)
 {
     switch (mType) {
-#ifdef MPP_VPP_G
     case MPP_VPP_G:
         return 1;
-#endif
     case MPP_VG:
     case MPP_VGR:
     case MPP_MSC:
@@ -609,12 +569,7 @@ int ExynosMPPModule::getDstHeightAlign(int format)
 }
 int ExynosMPPModule::getMaxDownscale()
 {
-    if (
-#ifdef MPP_VPP_G
-            (mType == MPP_VPP_G) ||
-#endif
-            (mType == MPP_VG)
-        )
+    if ((mType == MPP_VPP_G) || (mType == MPP_VG))
         return 1;
     else
         return ExynosMPP::getMaxDownscale();
@@ -622,12 +577,7 @@ int ExynosMPPModule::getMaxDownscale()
 
 int ExynosMPPModule::getMaxDownscale(hwc_layer_1_t &layer)
 {
-    if (
-#ifdef MPP_VPP_G
-           (mType == MPP_VPP_G) ||
-#endif
-            (mType == MPP_VG)
-        )
+    if ((mType == MPP_VPP_G) || (mType == MPP_VG))
         return 1;
     else
         return ExynosMPP::getMaxDownscale(layer);
@@ -635,12 +585,7 @@ int ExynosMPPModule::getMaxDownscale(hwc_layer_1_t &layer)
 
 int ExynosMPPModule::getMaxUpscale()
 {
-    if (
-#ifdef MPP_VPP_G
-            (mType == MPP_VPP_G) ||
-#endif
-            (mType == MPP_VG)
-        )
+    if ((mType == MPP_VPP_G) || (mType == MPP_VG))
         return 1;
     else
         return ExynosMPP::getMaxUpscale();
