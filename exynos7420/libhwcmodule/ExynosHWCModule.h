@@ -19,11 +19,11 @@
 #include <hardware/hwcomposer.h>
 
 #define HWC_VERSION     HWC_DEVICE_API_VERSION_1_5
-#define IDMA_SECURE     IDMA_G2
+#define IDMA_SECURE IDMA_G0
 
 #define VSYNC_DEV_PREFIX "/sys/devices/"
 #define VSYNC_DEV_MIDDLE ""
-#define VSYNC_DEV_NAME  "13930000.decon_fb/vsync"
+#define VSYNC_DEV_NAME  "13930000.decon_f/vsync"
 
 #define FIMD_WORD_SIZE_BYTES   16
 #define FIMD_BURSTLEN   16
