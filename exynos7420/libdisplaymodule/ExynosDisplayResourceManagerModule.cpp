@@ -48,11 +48,11 @@ void ExynosDisplayResourceManagerModule::preAssignResource()
 {
 #if defined(USES_SINGLE_DECON)
     if (mHwc->secondaryDisplay->mBlanked == false)
-        preAssignIntMpp(mHwc->secondaryDisplay, MPP_DEFAULT);
+        preAssignIntMpp(mHwc->secondaryDisplay, MPP_VPP_G);
 #endif
 #ifdef USES_VIRTUAL_DISPLAY
     if (mHwc->virtualDisplay->mIsWFDState) {
-        preAssignIntMpp(mHwc->virtualDisplay, MPP_DEFAULT);
+        preAssignIntMpp(mHwc->virtualDisplay, MPP_VPP_G);
         if (mHwc->virtualDisplay->mHasDrmSurface)
             preAssignIntMpp(mHwc->virtualDisplay, MPP_VG);
     }
