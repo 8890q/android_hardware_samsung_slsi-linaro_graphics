@@ -1,4 +1,5 @@
-# Copyright (C) 2015 The Android Open Source Project
+
+# Copyright (C) 2008 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+ifndef TARGET_SOC_BASE
+        TARGET_SOC_BASE := $(TARGET_SOC)
+endif
+
 ifeq ($(BOARD_USES_VDS_BGRA8888), true)
 LOCAL_C_INCLUDES += \
-	$(TOP)/hardware/samsung_slsi/$(TARGET_SOC)/libhwcutilsmodule \
-	$(TOP)/hardware/samsung_slsi/exynos/libmpp
+	$(TOP)/hardware/samsung_slsi-linaro/graphics/$(TARGET_SOC)/libhwcutilsmodule \
+	$(TOP)/hardware/samsung_slsi-linaro/graphics/base/libmpp
 endif
 
 LOCAL_SRC_FILES += \
-	./../../$(TARGET_SOC)/libvirtualdisplaymodule/ExynosVirtualDisplayModule.cpp
+        ../../$(TARGET_SOC_BASE)/libvirtualdisplaymodule/ExynosVirtualDisplayModule.cpp
