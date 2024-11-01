@@ -1139,6 +1139,12 @@ bool ExynosDisplay::isOverlaySupported(hwc_layer_1_t &layer, size_t index, bool 
         {
             ExynosMPPModule* internalMPP = mInternalMPPs[i];
             hwc_layer_1_t extMPPTempOutLayer = extMPPOutLayer;
+
+            #ifdef MPP_VG_IS_BLEND_INCAPABLE
+                if (internalMPP->mType == MPP_VG && layer.blending != HWC_BLENDING_NONE)
+                    continue;
+            #endif
+            
             if (isBothMPPUsed) {
                 if (internalMPP->mType == MPP_VPP_G)
                     continue;
@@ -1260,6 +1266,11 @@ bool ExynosDisplay::isOverlaySupported(hwc_layer_1_t &layer, size_t index, bool 
             if (handle)
                 ((private_handle_t *)extMPPOutLayer.handle)->format = dst_format;
             ExynosMPPModule* internalMPP = mInternalMPPs[i];
+
+            #ifdef MPP_VG_IS_BLEND_INCAPABLE
+                if (internalMPP->mType == MPP_VG && layer.blending != HWC_BLENDING_NONE)
+                    continue;
+            #endif
 
             /*
              * If MPP was assigned to other Device in previous frame
