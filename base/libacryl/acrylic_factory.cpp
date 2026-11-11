@@ -424,6 +424,14 @@ const static stHW2DCapability __capability_fimg2d_L8FSBWCL = {
     .base_align = 1,
 };
 
+// 8890 G2D 8J has no packed RGB888 format or quarter-turn rotator.
+static uint32_t fimg2d_8890_formats[] = {
+    HAL_PIXEL_FORMAT_RGBA_8888,
+    HAL_PIXEL_FORMAT_BGRA_8888,
+    HAL_PIXEL_FORMAT_RGBX_8888,
+    HAL_PIXEL_FORMAT_RGB_565,
+};
+
 const static stHW2DCapability __capability_fimg2d_8890 = {
     .max_upsampling_num = {32767, 32767},
     .max_downsampling_factor = {2, 2},
@@ -436,12 +444,12 @@ const static stHW2DCapability __capability_fimg2d_8890 = {
     .min_pix_align = {1, 1},
     .rescaling_count = 1,
     .compositing_mode = HW2DCapability::BLEND_NONE | HW2DCapability::BLEND_SRC_COPY | HW2DCapability::BLEND_SRC_OVER,
-    .transform_type = HW2DCapability::TRANSFORM_ALL,
+    .transform_type = HW2DCapability::TRANSFORM_FLIP_HV | HW2DCapability::TRANSFORM_ROT_180,
     .auxiliary_feature = HW2DCapability::FEATURE_PLANE_ALPHA | HW2DCapability::FEATURE_AFBC_DECODE,
-    .num_formats = sizeof(rgb_formats) / sizeof(rgb_formats[0]),
+    .num_formats = ARRSIZE(fimg2d_8890_formats),
     .num_dataspaces = sizeof(srgb_dataspaces) / sizeof(srgb_dataspaces[0]),
     .max_layers = 3,
-    .pixformats = rgb_formats,
+    .pixformats = fimg2d_8890_formats,
     .dataspaces = srgb_dataspaces,
     .base_align = 1,
 };
